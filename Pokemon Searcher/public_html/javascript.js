@@ -47,7 +47,7 @@ window.onload = () => {
             return Promise.all(promises)
         })
         .then(allPokemon => {
-            allPokemon.forEach(pokemon => {
+            allPokemon.forEach((pokemon, index) => {
                 let container = document.createElement("div")
                 let dex = document.createElement("div")
                 let sprite = document.createElement("img")
@@ -65,16 +65,15 @@ window.onload = () => {
                 name.innerHTML = name.innerHTML.charAt(0).toUpperCase() + name.innerHTML.slice(1)
 
                 container.className = "pokemonContainer"
+                container.style.animationDelay = `${index * 0.01}s`;
 
                 container.appendChild(dex)
                 container.appendChild(sprite)
                 container.appendChild(name)
-                container.addEventListener("click", (event) => {
-                    searchPokemon(pokemon.name)
-                })
-                result.appendChild(container)
 
+                result.appendChild(container)
             })
+            result.classList.add("loaded");
         })
 }
 function searchPokemon(name) {
