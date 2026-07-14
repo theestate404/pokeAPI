@@ -31,6 +31,7 @@ let genMap = {
     "generation-viii": 8,
     "generation-ix": 9
 }
+let pokemonList = [];
 let result = document.getElementById("result")
 let evoContainer = document.createElement("div");
 window.onload = () => {
@@ -59,6 +60,7 @@ window.onload = () => {
                 sprite.src = pokemon.sprites.front_default
                 sprite.className = "sprites"
 
+                pokemonList.push(pokemon.name);
                 name.textContent = pokemon.name
                 name.className = "names"
                 name.innerHTML = name.innerHTML.replace("-", " ")
@@ -75,6 +77,7 @@ window.onload = () => {
             })
             result.classList.add("loaded");
         })
+        console.log(pokemonList)
 }
 function searchPokemon(name) {
     result.innerHTML = "";

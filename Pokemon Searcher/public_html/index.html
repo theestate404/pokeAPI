@@ -12,8 +12,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <link rel = "stylesheet" href ="css.css">
     </head>
     <body>
-        <input id="pokemonInput">
-        <button onclick="searchPokemon(document.getElementById('pokemonInput').value)">Submit</button>
+            <div class="autocomplete" style="width:300px;">
+                <input id= "pokemonInput" type="text" placeholder="Pokemon">
+            </div>
+            <button onclick="searchPokemon(document.getElementById('pokemonInput').value)">Submit</button>
+        
         <div id = "result"></div>
         <div>Hello</div>
     </body>
