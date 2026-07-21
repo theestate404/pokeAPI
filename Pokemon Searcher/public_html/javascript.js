@@ -32,6 +32,7 @@ let genMap = {
     "generation-ix": 9
 }
 let pokemonList = [];
+const input = document.getElementById("pokemonInput");
 let result = document.getElementById("result")
 let evoContainer = document.createElement("div");
 window.onload = () => {
@@ -77,7 +78,8 @@ window.onload = () => {
             })
             result.classList.add("loaded");
         })
-        console.log(pokemonList)
+    console.log(pokemonList)
+    autocomplete(input, pokemonList);
 }
 function searchPokemon(name) {
     result.innerHTML = "";
@@ -241,5 +243,91 @@ function getEvolutionNames(chain) {
             .then(pokemon => {
                 sprite.src = pokemon.sprites.front_default
             })
+    });
+}
+function autocomplete(inp, arr) {
+    var currentFocus;
+
+    inp.addEventListener("input", function (e) {
+        var a, b, i, val = this.value;
+        closeAllLists();
+        if (!val) {
+            return false;
+        }
+        currentFocus = -1;
+        a = document.createElement("div")
+        a.setAttribute("id", this.id + "autocomplete-list")
+        a.setAttribute("class", "autocomplete-items")
+        this.parentNode.appendChild(a);
+        //for each item in the array
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                b = document.createElement("div")
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "<strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                b.innerHTML += "<input type ='hidden' value ='" + arr[i] + "'>"
+                b.addEventListener("click", function (e) {
+                    inp.value = this.getElementsByTagName("input")[0].value
+                    closeAllLists()
+                })
+                a.appendChild(b)
+            }
+        }
+    })
+    inp.addEventListener("keydown", function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        if (!x) {
+            return false
+        }
+        removeActive(x)
+        if (currentFocus >= x.length) {
+            currentFocus = 0;
+        }
+        if (currentFocus < 0) {
+            currentFocus = (x.length - 1)
+        }
+        x[currentFocus].classList.add("autocomplete-active")
+    }
+    function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active")
+        }
+    }
+    function closeAllLists(elmnt) {
+        var x = document.getElementsByClassName("autocomplete-items")
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i])
+            }
+        }
+    }
+    input.addEventListener("click", function (e) {
+        const pokemon = this.getElementsByTagName("input")[0].value
+        closeAllLists(e.target);
+        
+        searchPokemon(pokemon)
     });
 }
