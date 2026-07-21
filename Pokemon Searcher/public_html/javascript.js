@@ -73,8 +73,11 @@ window.onload = () => {
                 container.appendChild(dex)
                 container.appendChild(sprite)
                 container.appendChild(name)
-
+                container.addEventListener("click", function(e) {
+                    searchPokemon(pokemon.name)
+                })
                 result.appendChild(container)
+
             })
             result.classList.add("loaded");
         })
@@ -269,6 +272,7 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function (e) {
                     inp.value = this.getElementsByTagName("input")[0].value
                     closeAllLists()
+                    searchPokemon(inp.value)
                 })
                 a.appendChild(b)
             }
@@ -324,10 +328,5 @@ function autocomplete(inp, arr) {
             }
         }
     }
-    input.addEventListener("click", function (e) {
-        const pokemon = this.getElementsByTagName("input")[0].value
-        closeAllLists(e.target);
-        
-        searchPokemon(pokemon)
-    });
+    
 }
